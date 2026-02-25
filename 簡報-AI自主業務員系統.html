@@ -232,6 +232,23 @@
             background: #e8f4f8;
         }
 
+        /* 深色背景的表格樣式 */
+        .slide-dark table td,
+        .slide-accent table td {
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .slide-dark table tr:nth-child(even),
+        .slide-accent table tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .slide-dark table tr:hover,
+        .slide-accent table tr:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
         .price-tag {
             background: #e74c3c;
             color: white;
