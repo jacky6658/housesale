@@ -1,0 +1,38 @@
+# 敏感資料（真實設定檔）
+# 保留範例設定檔供參考
+*.env
+.env.local
+
+# API Keys & Tokens
+*token*
+*secret*
+*key*
+
+# 執行時產生的檔案
+skill-package/data/
+skill-package/logs/
+skill-package/node_modules/
+*.log
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# 臨時檔案
+*.tmp
+*.swp
+*.bak
+*~
+
+# 測試檔案
+/tmp/
+test-*.html
+test-*.json

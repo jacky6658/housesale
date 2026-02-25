@@ -1,0 +1,62 @@
+{
+  "monitoring": {
+    "enabled": true,
+    "platforms": ["591", "ptt"],
+    "schedule": {
+      "frequency_hours": 2,
+      "start_time": "09:00",
+      "end_time": "21:00"
+    },
+    "criteria": {
+      "region": "",
+      "budget_min": null,
+      "budget_max": null,
+      "area_min": null,
+      "area_max": null,
+      "type_priority": [],
+      "floor_min": null,
+      "floor_max": null,
+      "keywords": [],
+      "exclude_keywords": ["仲介", "代理", "房屋公司"]
+    }
+  },
+  "ai": {
+    "judge_owner": {
+      "enabled": true,
+      "confidence_threshold": 60
+    },
+    "scoring": {
+      "enabled": true,
+      "push_threshold": 70,
+      "weights": {
+        "price": 30,
+        "space": 25,
+        "location": 20,
+        "owner_probability": 15,
+        "completeness": 10
+      }
+    }
+  },
+  "notification": {
+    "telegram": {
+      "enabled": true,
+      "chat_id": "",
+      "immediate_notify": true,
+      "daily_report": true,
+      "weekly_report": true
+    }
+  },
+  "data": {
+    "google_sheets": {
+      "enabled": true,
+      "sheet_id": "",
+      "sync_interval_minutes": 30
+    },
+    "deduplication": {
+      "enabled": true,
+      "match_threshold": 0.9
+    }
+  },
+  "version": "1.0.0",
+  "last_updated": null
+}

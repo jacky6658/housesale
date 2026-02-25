@@ -1,0 +1,29 @@
+{
+  "name": "realty-monitor-skill-mvp",
+  "version": "1.0.0-mvp",
+  "description": "房地產監控技能 MVP - 591 自動監控 + AI 判斷 + Telegram 通知",
+  "main": "scripts/monitor-591.sh",
+  "scripts": {
+    "test": "node scripts/ai-judge.js test/sample-listing.json",
+    "monitor": "bash scripts/monitor-591.sh",
+    "parse": "node scripts/parse-591-html.js",
+    "judge": "node scripts/ai-judge.js",
+    "notify": "node scripts/notify-telegram.js"
+  },
+  "keywords": [
+    "realty",
+    "591",
+    "monitor",
+    "ai",
+    "telegram",
+    "openclaw"
+  ],
+  "author": "AIJob",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "jsdom": "^24.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

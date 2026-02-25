@@ -1,0 +1,56 @@
+{
+  "monitoring": {
+    "enabled": true,
+    "platforms": ["591"],
+    "schedule": {
+      "frequency_hours": 2,
+      "start_time": "09:00",
+      "end_time": "21:00"
+    },
+    "criteria": {
+      "region": "竹山鎮",
+      "budget_min": 50000,
+      "budget_max": 80000,
+      "area_min": 20,
+      "area_max": null,
+      "type_priority": ["透天", "公寓"],
+      "floor_min": null,
+      "floor_max": null,
+      "keywords": [],
+      "exclude_keywords": ["仲介", "代理", "房屋公司"]
+    }
+  },
+  "ai": {
+    "judge_owner": {
+      "enabled": true,
+      "confidence_threshold": 60
+    },
+    "scoring": {
+      "enabled": true,
+      "push_threshold": 70,
+      "weights": {
+        "price": 30,
+        "space": 25,
+        "location": 20,
+        "owner_probability": 15,
+        "completeness": 10
+      }
+    }
+  },
+  "notification": {
+    "telegram": {
+      "enabled": true,
+      "bot_token": "",
+      "chat_id": "",
+      "immediate_notify": true,
+      "daily_report": true,
+      "weekly_report": false
+    }
+  },
+  "data": {
+    "cache_file": "../data/seen-listings.json",
+    "log_file": "../logs/monitor.log"
+  },
+  "version": "1.0.0-mvp",
+  "last_updated": null
+}
