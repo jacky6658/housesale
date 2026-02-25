@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 案源開發系統 - 有巢氏房屋提案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ecf0f1;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            margin-bottom: 2px;
+            page-break-after: always;
+        }
+
+        .slide-cover {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .slide-dark {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .slide-accent {
+            background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%);
+            color: white;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+        }
+
+        .slide-dark h2, .slide-accent h2, .slide-cover h2 {
+            color: white;
+            border-bottom-color: white;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin: 30px 0 20px 0;
+            color: #34495e;
+        }
+
+        .slide-dark h3, .slide-accent h3 {
+            color: #ecf0f1;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .slide-cover .subtitle, .slide-dark .subtitle, .slide-accent .subtitle {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .slide-dark .card, .slide-accent .card {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .highlight-green {
+            background: linear-gradient(120deg, #27ae60 0%, #229954 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .big-number {
+            font-size: 4em;
+            font-weight: 700;
+            color: #3498db;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .slide-dark .big-number, .slide-accent .big-number {
+            color: white;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.2em;
+        }
+
+        ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+        }
+
+        table th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        table tr:hover {
+            background: #e8f4f8;
+        }
+
+        .price-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.5em;
+            font-weight: 700;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .price-tag-green {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.5em;
+            font-weight: 700;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .mockup {
+            background: #34495e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .mockup-header {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .mockup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            font-size: 0.95em;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin: 5px;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .badge-info {
+            background: #3498db;
+            color: white;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .cta-box h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-box .big-number {
+            color: #ffe66d;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .comparison-table th {
+            background: #2c3e50;
+        }
+
+        .comparison-table .plan-basic {
+            background: #ecf0f1;
+        }
+
+        .comparison-table .plan-advanced {
+            background: #d5f4e6;
+            font-weight: 700;
+        }
+
+        .comparison-table .plan-complete {
+            background: #fef5e7;
+        }
+
+        @media print {
+            .slide {
+                page-break-after: always;
+            }
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #3498db;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3498db;
+            border: 4px solid white;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #3498db;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        .flow-step {
+            text-align: center;
+            padding: 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: white;
+            text-align: center;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 第 1 頁：封面 -->
+<div class="slide slide-cover">
+    <h1>AI 案源開發系統</h1>
+    <h2 style="border: none; font-size: 2em; margin-bottom: 50px;">24H 自動監控 591 + PTT 租屋平台</h2>
+    <div class="subtitle">專為房仲業打造的智能物件篩選系統</div>
+    <div style="margin-top: 80px;">
+        <p style="font-size: 1.3em;">提案對象：有巢氏房屋</p>
+        <p style="font-size: 1.1em; margin-top: 20px;">日期：2026-02-25</p>
+    </div>
+</div>
+
+<!-- 第 2 頁：成品展示 -->
+<div class="slide">
+    <h2>成品展示</h2>
+    
+    <div class="grid-2">
+        <!-- 左側：Telegram 推送範例 -->
+        <div>
+            <h3>Telegram 即時推送</h3>
+            <div class="mockup">
+                <div class="mockup-header">🦞 龍蝦助理</div>
+                <div class="mockup-content">
+                    <strong>【新物件通知】</strong><br>
+                    ─────────────────<br><br>
+                    🏠 <strong>竹山鎮透天厝出租</strong><br><br>
+                    📍 地點：竹山鎮延平路 128 號<br>
+                    💰 租金：6,800 元/月<br>
+                    📏 坪數：28 坪<br>
+                    🏢 類型：透天 3F<br><br>
+                    <span class="badge badge-success">✨ AI 評分：85 分</span><br>
+                    <span class="badge badge-info">📊 屋主機率：95%</span><br><br>
+                    <strong>【詳細資訊】</strong><br>
+                    ✓ 近竹山國小 (300m)<br>
+                    ✓ 近傳統市場 (200m)<br>
+                    ✓ 有專屬停車位<br>
+                    ✓ 刊登 15 天<br><br>
+                    📞 聯絡：0912-345-678（手機）<br><br>
+                    ─────────────────<br>
+                    <strong>操作選項（回覆數字）：</strong><br>
+                    1️⃣ 確認聯繫<br>
+                    2️⃣ 稍後決定<br>
+                    3️⃣ 不感興趣
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：Google Sheets 清單 -->
+        <div>
+            <h3>Google Sheets 自動彙整</h3>
+            <table style="font-size: 0.85em;">
+                <tr>
+                    <th>日期</th>
+                    <th>地點</th>
+                    <th>租金</th>
+                    <th>評分</th>
+                    <th>屋主%</th>
+                    <th>狀態</th>
+                </tr>
+                <tr>
+                    <td>2/25</td>
+                    <td>延平路</td>
+                    <td>6,800</td>
+                    <td><strong>85</strong></td>
+                    <td>95%</td>
+                    <td><span class="badge badge-warning">待聯繫</span></td>
+                </tr>
+                <tr>
+                    <td>2/25</td>
+                    <td>集山路</td>
+                    <td>5,500</td>
+                    <td>78</td>
+                    <td>80%</td>
+                    <td><span class="badge badge-info">已聯繫</span></td>
+                </tr>
+                <tr>
+                    <td>2/24</td>
+                    <td>菜園路</td>
+                    <td>7,200</td>
+                    <td>82</td>
+                    <td>90%</td>
+                    <td><span class="badge badge-success">看屋中</span></td>
+                </tr>
+            </table>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #e8f4f8; border-radius: 8px;">
+                <strong>🎯 系統特色：</strong><br>
+                • AI 自動評分（0-100 分）<br>
+                • 屋主機率判斷（80% 以上才推送）<br>
+                • 地段自動分析<br>
+                • 互動式快速操作
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 3 頁：功能清單 -->
+<div class="slide">
+    <h2>核心功能（6 大模組）</h2>
+    
+    <div class="grid-3">
+        <div class="card">
+            <h3 style="color: #3498db;">1️⃣ 多平台監控</h3>
+            <ul style="font-size: 0.95em;">
+                <li>591 租屋網</li>
+                <li>PTT 租屋板</li>
+                <li>樂屋網（選配）</li>
+                <li>自訂監控頻率</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #3498db;">2️⃣ AI 智能判斷</h3>
+            <ul style="font-size: 0.95em;">
+                <li>屋主 vs 仲介辨識</li>
+                <li>5 維度評分系統</li>
+                <li>準確度 85-95%</li>
+                <li>關鍵字自訂規則</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #3498db;">3️⃣ 地段價值分析</h3>
+            <ul style="font-size: 0.95em;">
+                <li>Google Maps 距離計算</li>
+                <li>自訂重要地標</li>
+                <li>精華地段加分</li>
+                <li>避開地段扣分</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #3498db;">4️⃣ 即時推送</h3>
+            <ul style="font-size: 0.95em;">
+                <li>Telegram 訊息推送</li>
+                <li>自訂推送條件</li>
+                <li>重複物件過濾</li>
+                <li>每日/每週報告</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #3498db;">5️⃣ 物件管理</h3>
+            <ul style="font-size: 0.95em;">
+                <li>Google Sheets 彙整</li>
+                <li>狀態追蹤</li>
+                <li>歷史紀錄查詢</li>
+                <li>Excel 匯出</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #3498db;">6️⃣ 對話互動</h3>
+            <ul style="font-size: 0.95em;">
+                <li>自然語言設定</li>
+                <li>即時查詢物件</li>
+                <li>一鍵產生開發訊息</li>
+                <li>學習業務員偏好</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border-radius: 12px; text-align: center;">
+        <h3 style="color: white; margin-bottom: 15px;">🎯 最重要的價值</h3>
+        <div class="big-number" style="color: white;">每週省下 12 小時</div>
+        <p style="font-size: 1.2em;">讓業務員專注在「成交」而非「篩選」</p>
+    </div>
+</div>
+
+<!-- 第 4 頁：協助流程 -->
+<div class="slide slide-dark">
+    <h2>完整協助流程（4 階段）</h2>
+    
+    <div class="timeline">
+        <div class="timeline-item">
+            <h3 style="color: white;">第 1 階段：需求訪談（2-3 天）</h3>
+            <div style="margin-left: 20px; font-size: 1.1em;">
+                <strong>我們做：</strong> 需求訪談會議、設定檔設計、需求確認書<br>
+                <strong>客戶做：</strong> 提供監控區域、目標物件、精華地段資料
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <h3 style="color: white;">第 2 階段：系統開發（1-3 週）</h3>
+            <div style="margin-left: 20px; font-size: 1.1em;">
+                <strong>我們做：</strong> 腳本開發、AI 調校、模板設定、測試優化<br>
+                <strong>客戶做：</strong> 準備 24H 電腦、申請 API Key、建立 Telegram
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <h3 style="color: white;">第 3 階段：到府安裝（1 天）</h3>
+            <div style="margin-left: 20px; font-size: 1.1em;">
+                <strong>我們做：</strong> 環境安裝、系統部署、API 設定、測試運行<br>
+                <strong>客戶做：</strong> 配合安裝時程、參加教育訓練
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <h3 style="color: white;">第 4 階段：教育訓練（半天）</h3>
+            <div style="margin-left: 20px; font-size: 1.1em;">
+                <strong>我們做：</strong> 操作教學、設定調整、常見問題、故障排除<br>
+                <strong>客戶做：</strong> 實際操作練習、提供回饋
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 50px; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+        <div class="grid-2">
+            <div>
+                <h3 style="color: white;">客戶需準備</h3>
+                <ul style="color: white;">
+                    <li>24H 運行電腦（i3/8GB/100GB）</li>
+                    <li>Telegram 帳號（免費）</li>
+                    <li>Google 帳號（免費）</li>
+                    <li>API Key 申請（我們提供教學）</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: white;">總時程</h3>
+                <div class="big-number" style="color: white; font-size: 3em;">5-6 週</div>
+                <p style="color: white; font-size: 1.2em;">快速上線方案：2 週（加價 20%）</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 5 頁：技術成本分析 -->
+<div class="slide">
+    <h2>技術成本分析（完全透明）</h2>
+    
+    <h3>LLM 模型選擇與價格</h3>
+    <table>
+        <tr>
+            <th>模型</th>
+            <th>月費 (NT$)</th>
+            <th>準確度</th>
+            <th>速度</th>
+            <th>推薦情境</th>
+        </tr>
+        <tr>
+            <td>Gemini 1.5 Flash</td>
+            <td><span class="price-tag-green">35-50</span></td>
+            <td>75%</td>
+            <td>⚡⚡⚡</td>
+            <td>預算優先</td>
+        </tr>
+        <tr style="background: #d5f4e6; font-weight: 700;">
+            <td>Claude Haiku 4 ⭐</td>
+            <td><span class="price-tag-green">100-120</span></td>
+            <td>85%</td>
+            <td>⚡⚡⚡</td>
+            <td><strong>主推方案</strong></td>
+        </tr>
+        <tr>
+            <td>GPT-4o mini</td>
+            <td><span class="price-tag-green">70-90</span></td>
+            <td>80%</td>
+            <td>⚡⚡⚡</td>
+            <td>備選方案</td>
+        </tr>
+        <tr>
+            <td>Claude Sonnet 4</td>
+            <td><span class="price-tag">1,500-1,800</span></td>
+            <td>95%</td>
+            <td>⚡⚡</td>
+            <td>高準確需求</td>
+        </tr>
+    </table>
+
+    <div class="grid-2" style="margin-top: 40px;">
+        <div>
+            <h3>Token 消耗計算（Claude Haiku 4）</h3>
+            <div class="code-block">
+單個物件處理：
+  物件解析：700 tokens
+  AI 判斷：1,100 tokens
+  地段評分：550 tokens
+  ─────────────────
+  小計：2,350 tokens
+
+每月處理 900 個物件：
+  月消耗：2.1M tokens
+  
+成本（含 Caching 優化）：
+  原始成本：NT$ 41
+  優化後：NT$ 20-30
+  對話互動：NT$ 20
+  ─────────────────
+  <strong style="color: #ffe66d;">總月費：NT$ 40-50</strong>
+            </div>
+        </div>
+
+        <div>
+            <h3>其他運行成本</h3>
+            <table style="font-size: 0.95em;">
+                <tr>
+                    <th>項目</th>
+                    <th>月費 (NT$)</th>
+                </tr>
+                <tr>
+                    <td>LLM API（Claude Haiku）</td>
+                    <td><strong>40-50</strong></td>
+                </tr>
+                <tr>
+                    <td>Google Sheets API</td>
+                    <td>0（免費）</td>
+                </tr>
+                <tr>
+                    <td>Telegram Bot</td>
+                    <td>0（免費）</td>
+                </tr>
+                <tr>
+                    <td>電費（24H 運行）</td>
+                    <td>100</td>
+                </tr>
+                <tr style="background: #d5f4e6; font-weight: 700;">
+                    <td><strong>總計</strong></td>
+                    <td><span class="price-tag-green">140-150</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; padding: 25px; background: #e8f4f8; border-radius: 8px; text-align: center;">
+        <strong style="font-size: 1.3em;">💡 關鍵優勢：成本極低且透明</strong><br>
+        <p style="margin-top: 15px; font-size: 1.1em;">
+            月運行成本 NT$ 140-150 由客戶自付 LLM API 費用<br>
+            這是實測數據（7 天測試，每日 NT$ 0.49）
+        </p>
+    </div>
+</div>
+
+<!-- 第 6 頁：費用拆分 -->
+<div class="slide slide-accent">
+    <h2>費用拆分（完全透明化）</h2>
+    
+    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; margin-bottom: 40px; text-align: center;">
+        <h3 style="color: white; font-size: 2em; margin-bottom: 20px;">總費用 = A + B + C</h3>
+        <div class="grid-3">
+            <div>
+                <div style="font-size: 1.3em; font-weight: 700;">A</div>
+                <div>一次性費用</div>
+                <div style="font-size: 0.9em; opacity: 0.8;">付給我們</div>
+            </div>
+            <div>
+                <div style="font-size: 1.3em; font-weight: 700;">B</div>
+                <div>月運行成本</div>
+                <div style="font-size: 0.9em; opacity: 0.8;">客戶自付 LLM API</div>
+            </div>
+            <div>
+                <div style="font-size: 1.3em; font-weight: 700;">C</div>
+                <div>技術支援費</div>
+                <div style="font-size: 0.9em; opacity: 0.8;">選配，付給我們</div>
+            </div>
+        </div>
+    </div>
+
+    <h3 style="color: white;">A. 一次性費用（三方案）</h3>
+    <table style="margin-bottom: 40px;">
+        <tr>
+            <th>方案</th>
+            <th>開發費</th>
+            <th>部署培訓</th>
+            <th>總計</th>
+            <th>核心內容</th>
+        </tr>
+        <tr>
+            <td><strong>基礎版</strong></td>
+            <td>38,000</td>
+            <td>8,000</td>
+            <td><span class="price-tag">46,000</span></td>
+            <td>591 單區 + 基礎 AI</td>
+        </tr>
+        <tr style="background: #d5f4e6;">
+            <td><strong>進階版 ⭐</strong></td>
+            <td>68,000</td>
+            <td>12,000</td>
+            <td><span class="price-tag">80,000</span></td>
+            <td>多區 + 進階 AI + 對話</td>
+        </tr>
+        <tr>
+            <td><strong>完整版</strong></td>
+            <td>138,000</td>
+            <td>22,000</td>
+            <td><span class="price-tag">160,000</span></td>
+            <td>全功能 + Web 後台</td>
+        </tr>
+    </table>
+
+    <div class="grid-2">
+        <div>
+            <h3 style="color: white;">B. 月運行成本（客戶自付）</h3>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <strong style="font-size: 1.2em;">方案 1：客戶自備 API Key ⭐</strong><br>
+                <div style="margin: 15px 0;">
+                    LLM API：NT$ 40-50/月<br>
+                    電費：NT$ 100/月<br>
+                    ─────────────────<br>
+                    <strong>總計：NT$ 140-150/月</strong>
+                </div>
+                <div style="font-size: 0.95em; opacity: 0.9;">
+                    ✓ 成本最低<br>
+                    ✓ 用量透明<br>
+                    ✓ 無中間加價
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3 style="color: white;">C. 技術支援費（含免費 14 日）</h3>
+            <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 2px solid rgba(255,255,255,0.3);">
+                <strong style="font-size: 1.1em;">✨ 驗收後免費 14 日技術支援</strong><br>
+                <div style="font-size: 0.95em; margin-top: 8px; opacity: 0.9;">
+                    僅限技術性異常，不含新增功能
+                </div>
+            </div>
+            <table style="font-size: 0.95em;">
+                <tr>
+                    <th>等級</th>
+                    <th>月費</th>
+                </tr>
+                <tr>
+                    <td>基礎支援</td>
+                    <td>2,000</td>
+                </tr>
+                <tr style="background: #d5f4e6;">
+                    <td><strong>進階支援 ⭐</strong></td>
+                    <td><strong>5,000</strong></td>
+                </tr>
+                <tr>
+                    <td>完整支援</td>
+                    <td>8,000</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 第 7 頁：合約與付款流程 -->
+<div class="slide slide-dark">
+    <h2>合約與付款流程</h2>
+    
+    <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 12px; margin-bottom: 40px;">
+        <h3 style="color: white; text-align: center; margin-bottom: 30px;">📋 付款方式</h3>
+        <div class="grid-2">
+            <div class="flow-step">
+                <div style="font-size: 3em; margin-bottom: 15px;">1️⃣</div>
+                <h3 style="color: white; font-size: 1.5em; margin-bottom: 15px;">簽約訂金</h3>
+                <div class="big-number" style="color: #ffe66d; font-size: 3em;">70%</div>
+                <div style="font-size: 1.1em; margin-top: 15px;">
+                    簽約後 3 個工作日內支付<br>
+                    <span style="font-size: 0.9em; opacity: 0.8;">（專案排程與開發啟動費用）</span>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div style="font-size: 3em; margin-bottom: 15px;">2️⃣</div>
+                <h3 style="color: white; font-size: 1.5em; margin-bottom: 15px;">驗收尾款</h3>
+                <div class="big-number" style="color: #ffe66d; font-size: 3em;">30%</div>
+                <div style="font-size: 1.1em; margin-top: 15px;">
+                    驗收通過後支付<br>
+                    <span style="font-size: 0.9em; opacity: 0.8;">（完成驗收通知後 7 日內）</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; margin-bottom: 40px;">
+        <h3 style="color: white; margin-bottom: 25px;">🔄 完整流程（4 步驟）</h3>
+        <div class="grid-2" style="gap: 20px;">
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">📝 1. 簽署合約</div>
+                <div style="font-size: 1.05em;">
+                    • 雙方簽署開發服務合約<br>
+                    • 附件一：專案規格與驗收標準說明書<br>
+                    • 明確功能範圍與交付項目
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">💰 2. 支付訂金</div>
+                <div style="font-size: 1.05em;">
+                    • 70% 訂金（3 個工作日內）<br>
+                    • 訂金支付後開始執行專案<br>
+                    • ⚠️ 訂金不予退還
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">✅ 3. 驗收系統</div>
+                <div style="font-size: 1.05em;">
+                    • 依附件一逐項檢視功能<br>
+                    • 7 日內完成驗收<br>
+                    • 未提出視為驗收通過
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">🎯 4. 正式交付</div>
+                <div style="font-size: 1.05em;">
+                    • 支付 30% 尾款<br>
+                    • 系統正式上線<br>
+                    • 啟動 14 日免費技術支援
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div style="background: rgba(231, 76, 60, 0.2); padding: 25px; border-radius: 12px; border: 2px solid #e74c3c;">
+            <h3 style="color: white;">⚠️ 重要說明</h3>
+            <ul style="color: white; font-size: 1.05em;">
+                <li>訂金屬「專案排程與開發啟動費用」</li>
+                <li>一經專案開始執行即不予退還</li>
+                <li>尾款未付清前暫停系統交付</li>
+                <li>需求變更需另行評估費用</li>
+            </ul>
+        </div>
+
+        <div style="background: rgba(39, 174, 96, 0.2); padding: 25px; border-radius: 12px; border: 2px solid #27ae60;">
+            <h3 style="color: white;">✨ 免費技術支援（14 日）</h3>
+            <div style="color: white; font-size: 1.05em;">
+                <strong>包含：</strong><br>
+                • 技術性異常排除<br>
+                • 系統設定調整<br>
+                • 操作問題解答<br><br>
+                <strong>不包含：</strong><br>
+                • 功能新增或調整<br>
+                • 第三方服務變更導致的問題<br>
+                • 客戶自行修改導致的異常
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 8 頁：三方案比較 -->
+<div class="slide">
+    <h2>三方案功能對比</h2>
+    
+    <table class="comparison-table">
+        <tr>
+            <th>功能項目</th>
+            <th class="plan-basic">基礎版<br>46,000</th>
+            <th class="plan-advanced">進階版 ⭐<br>80,000</th>
+            <th class="plan-complete">完整版<br>160,000</th>
+        </tr>
+        <tr>
+            <td><strong>監控平台</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>591 租屋網</td>
+            <td>✓</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>PTT 租屋板</td>
+            <td>✗</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>監控區域</td>
+            <td>1 個</td>
+            <td>3-5 個</td>
+            <td>無限制</td>
+        </tr>
+        <tr>
+            <td><strong>AI 判斷</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>關鍵字比對</td>
+            <td>✓</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>LLM 語意分析</td>
+            <td>✗</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>地段價值評分</td>
+            <td>手動設定</td>
+            <td>自動計算</td>
+            <td>自動計算</td>
+        </tr>
+        <tr>
+            <td>價格異常偵測</td>
+            <td>✗</td>
+            <td>✗</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td><strong>互動功能</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>一鍵開發訊息</td>
+            <td>✗</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>對話式設定</td>
+            <td>✗</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>Web 管理後台</td>
+            <td>✗</td>
+            <td>✗</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td><strong>服務內容</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>到府安裝</td>
+            <td>1 次</td>
+            <td>2 次</td>
+            <td>3 次</td>
+        </tr>
+        <tr>
+            <td>教育訓練</td>
+            <td>半天</td>
+            <td>1 天</td>
+            <td>2 天</td>
+        </tr>
+        <tr>
+            <td>保固/支援</td>
+            <td>30 天</td>
+            <td>90 天</td>
+            <td>6 個月</td>
+        </tr>
+    </table>
+
+    <div style="margin-top: 40px; padding: 30px; background: #fef5e7; border-radius: 12px; border-left: 6px solid #f39c12;">
+        <h3 style="color: #f39c12;">💡 推薦：進階版（NT$ 80,000）</h3>
+        <div style="font-size: 1.1em; margin-top: 15px;">
+            <strong>適合有巢氏房屋的 3 大理由：</strong><br>
+            1. 可監控 3-5 個區域（南投縣主要租屋熱區）<br>
+            2. 進階 AI 判斷準確度 85%，大幅減少篩選時間<br>
+            3. 對話互動功能，業務員可自然語言調整設定
+        </div>
+    </div>
+</div>
+
+<!-- 第 9 頁：實施時程 -->
+<div class="slide slide-dark">
+    <h2>實施時程規劃</h2>
+    
+    <table>
+        <tr>
+            <th>週次</th>
+            <th>階段</th>
+            <th>我們做什麼</th>
+            <th>客戶做什麼</th>
+        </tr>
+        <tr>
+            <td><strong>W1</strong></td>
+            <td>需求訪談<br>(3 天)</td>
+            <td>需求訪談會議、設定檔設計、需求確認書</td>
+            <td>提供監控區域、目標物件、精華地段資料、確認需求</td>
+        </tr>
+        <tr>
+            <td><strong>W2-W3</strong></td>
+            <td>系統開發<br>(10 天)</td>
+            <td>腳本開發、AI 調校、模板設定、測試優化</td>
+            <td>準備電腦、申請 API Key、建立 Telegram、建立 Sheets</td>
+        </tr>
+        <tr>
+            <td><strong>W4</strong></td>
+            <td>部署上線<br>(3 天)</td>
+            <td>到府安裝、系統測試、教育訓練、驗收</td>
+            <td>配合安裝時程、參加教育訓練、實際操作練習</td>
+        </tr>
+        <tr>
+            <td><strong>W5</strong></td>
+            <td>試運行<br>(7 天)</td>
+            <td>遠端監控、微調設定、問題修復</td>
+            <td>回報使用狀況、提供優化建議</td>
+        </tr>
+        <tr style="background: #d5f4e6;">
+            <td><strong>W6</strong></td>
+            <td>正式上線<br>(1 天)</td>
+            <td>交付完成報告、保固開始</td>
+            <td>簽署驗收單</td>
+        </tr>
+    </table>
+
+    <div class="grid-2" style="margin-top: 40px;">
+        <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px;">
+            <h3 style="color: white;">標準時程</h3>
+            <div class="big-number" style="color: white;">5-6 週</div>
+            <p style="color: white; font-size: 1.1em; margin-top: 15px;">
+                完整開發、測試、培訓流程
+            </p>
+        </div>
+
+        <div style="background: rgba(231, 76, 60, 0.2); padding: 30px; border-radius: 12px; border: 3px solid #e74c3c;">
+            <h3 style="color: white;">快速上線方案</h3>
+            <div class="big-number" style="color: #ffe66d;">2 週</div>
+            <p style="color: white; font-size: 1.1em; margin-top: 15px;">
+                加價 20%（NT$ 16,000）<br>
+                優先排程、即時回應
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 第 10 頁：成功案例 -->
+<div class="slide">
+    <h2>成功案例與測試數據</h2>
+    
+    <div class="grid-2">
+        <div class="card">
+            <h3>案例：內湖按摩店面開發</h3>
+            <div style="margin: 20px 0;">
+                <strong>客戶背景：</strong>按摩/SPA 店面<br>
+                <strong>需求：</strong>尋找內湖區合適店面<br>
+                <strong>測試期：</strong>3 週
+            </div>
+            
+            <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="stat-box">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">找到潛在店面</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">實地看屋</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">最終成交</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">87%</div>
+                    <div class="stat-label">時間節省</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-style: italic;">
+                "系統推薦的物件品質很高，3 週就找到合適店面，回本速度超乎想像！"
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>測試：竹山鎮模擬（7 天）</h3>
+            
+            <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin: 20px 0;">
+                <div class="stat-box">
+                    <div class="stat-number">74</div>
+                    <div class="stat-label">總掃描物件</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color: #e74c3c;">52</div>
+                    <div class="stat-label">明顯仲介（排除）</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color: #f39c12;">22</div>
+                    <div class="stat-label">AI 判斷</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color: #27ae60;">9</div>
+                    <div class="stat-label">推送物件</div>
+                </div>
+            </div>
+
+            <div style="background: #d5f4e6; padding: 20px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 2.5em; font-weight: 700; color: #27ae60;">89%</div>
+                <div style="font-size: 1.2em; margin-top: 10px;">屋主自租準確度</div>
+                <div style="font-size: 0.95em; color: #7f8c8d; margin-top: 10px;">9 個推送物件中 8 個確認為屋主</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-box" style="margin-top: 40px;">
+        <h3>💰 效益試算</h3>
+        <div class="grid-2" style="margin-top: 30px; text-align: left;">
+            <div>
+                <strong style="font-size: 1.3em;">傳統方式</strong><br>
+                • 每天滑 2 小時 × 30 天 = 60 小時/月<br>
+                • 找到屋主機率：10%<br>
+                • 月成交：0-1 件（看運氣）
+            </div>
+            <div>
+                <strong style="font-size: 1.3em;">使用系統後</strong><br>
+                • 每天看推送 10 分鐘 = 5 小時/月<br>
+                • 找到屋主機率：85%<br>
+                • 月成交：2-3 件（穩定）
+            </div>
+        </div>
+        <div style="margin-top: 30px; font-size: 1.3em;">
+            <strong>省下 55 小時/月 + 多賺 2 件成交 = 額外收入 60,000/月</strong>
+        </div>
+    </div>
+</div>
+
+<!-- 第 11 頁：風險保障 -->
+<div class="slide slide-accent">
+    <h2>風險保障與退款政策</h2>
+    
+    <div class="grid-3">
+        <div class="card">
+            <h3 style="color: #2c3e50;">基礎版</h3>
+            <div class="big-number" style="color: #3498db; font-size: 3em;">30 天</div>
+            <div style="margin-top: 15px;">
+                <strong>滿意保證</strong><br>
+                • 30 天內不滿意全額退款<br>
+                • 推送物件 < 10 個/週<br>
+                • 或準確度 < 60%
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #2c3e50;">進階版 ⭐</h3>
+            <div class="big-number" style="color: #3498db; font-size: 3em;">90 天</div>
+            <div style="margin-top: 15px;">
+                <strong>品質保證</strong><br>
+                • 90 天免費維護<br>
+                • Bug 修復<br>
+                • 功能調整<br>
+                • 準確度 < 70% 退款
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #2c3e50;">完整版</h3>
+            <div class="big-number" style="color: #3498db; font-size: 3em;">6 個月</div>
+            <div style="margin-top: 15px;">
+                <strong>完整支援</strong><br>
+                • 6 個月技術支援<br>
+                • 系統升級<br>
+                • 功能新增<br>
+                • 準確度 < 80% 退款
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 50px;">
+        <h3 style="color: white;">其他保證</h3>
+        <div class="grid-2">
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <h3 style="color: white; font-size: 1.3em;">🔒 系統穩定性</h3>
+                <ul style="color: white; font-size: 1.1em;">
+                    <li>運行時間 > 95%</li>
+                    <li>API 成功率 > 99%</li>
+                    <li>推送延遲 < 5 分鐘</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <h3 style="color: white; font-size: 1.3em;">🛡️ 資料安全</h3>
+                <ul style="color: white; font-size: 1.1em;">
+                    <li>資料僅存客戶電腦</li>
+                    <li>API Key 加密儲存</li>
+                    <li>不上傳到我們伺服器</li>
+                    <li>符合個資法規範</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 12 頁：Q&A -->
+<div class="slide">
+    <h2>常見問題 Q&A</h2>
+    
+    <div class="grid-2">
+        <div>
+            <div class="card">
+                <h3>❓ 系統需要什麼電腦？</h3>
+                <p><strong>A:</strong> 最低規格 Intel i3、8GB RAM、100GB 硬碟，一般文書機或筆電即可。</p>
+            </div>
+
+            <div class="card">
+                <h3>❓ 電腦關機會怎樣？</h3>
+                <p><strong>A:</strong> 系統會自動重啟，斷網期間的物件不會錯過（591 有歷史紀錄）。</p>
+            </div>
+
+            <div class="card">
+                <h3>❓ API Key 會被盜用嗎？</h3>
+                <p><strong>A:</strong> API Key 加密儲存，設定每月預算上限（如 $10），異常呼叫自動停止。</p>
+            </div>
+
+            <div class="card">
+                <h3>❓ 為什麼不用免費 LLM？</h3>
+                <p><strong>A:</strong> 免費模型準確度 <70%，商用 LLM 成本極低（月 <$5），錯誤推薦浪費業務員時間。</p>
+            </div>
+        </div>
+
+        <div>
+            <div class="card">
+                <h3>❓ 可以監控幾個區域？</h3>
+                <p><strong>A:</strong> 基礎版 1 個、進階版 3-5 個、完整版無限制。區域可細到「竹山鎮延平路」。</p>
+            </div>
+
+            <div class="card">
+                <h3>❓ 用量暴增怎麼辦？</h3>
+                <p><strong>A:</strong> 系統自動警報，可調整監控頻率、減少區域、或切換至 Gemini Flash（成本降 70%）。</p>
+            </div>
+
+            <div class="card">
+                <h3>❓ 業務員需要懂技術嗎？</h3>
+                <p><strong>A:</strong> 不需要！日常使用只需會看 Telegram 訊息，設定可用對話方式。</p>
+            </div>
+
+            <div class="card">
+                <h3>❓ 可以先試用嗎？</h3>
+                <p><strong>A:</strong> 可以！提供 7 天免費試用，我們會到府安裝測試版，滿意後再簽約。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 13 頁：行動呼籲 -->
+<div class="slide slide-cover">
+    <div class="cta-box" style="max-width: 900px; margin: 0 auto;">
+        <h2 style="color: white; border: none; margin-bottom: 30px;">限時優惠</h2>
+        <div style="font-size: 1.3em; margin-bottom: 20px;">2026-03-15 前簽約</div>
+        
+        <div style="background: rgba(255,255,255,0.2); padding: 40px; border-radius: 12px; margin: 30px 0;">
+            <div style="font-size: 2em; font-weight: 700; margin-bottom: 15px;">
+                進階版特價 NT$ 72,000
+            </div>
+            <div style="font-size: 1.3em; opacity: 0.9;">
+                原價 80,000，省下 8,000
+            </div>
+            
+            <div style="margin-top: 30px; text-align: left; font-size: 1.1em;">
+                ✓ 免費 7 天試用<br>
+                ✓ 保固期延長至 120 天<br>
+                ✓ 免費到府安裝 3 次（原 2 次）<br>
+                ✓ 贈送 1 個月進階技術支援
+            </div>
+        </div>
+
+        <h3 style="color: white; margin: 40px 0 20px 0;">下一步</h3>
+        <div class="grid-3" style="text-align: center;">
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <div style="font-size: 3em; margin-bottom: 10px;">1</div>
+                <strong>預約免費諮詢</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.8;">30 分鐘深入了解</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <div style="font-size: 3em; margin-bottom: 10px;">2</div>
+                <strong>免費試用 7 天</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.8;">實際體驗系統</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <div style="font-size: 3em; margin-bottom: 10px;">3</div>
+                <strong>滿意後簽約</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.8;">正式啟動開發</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer" style="margin-top: 80px; color: rgba(255,255,255,0.8);">
+        <p style="font-size: 1.2em;">📞 聯絡我們</p>
+        <p>Email: contact@example.com | LINE: @housesale</p>
+    </div>
+</div>
+
+<script>
+// 簡報導航（鍵盤操作）
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+        }
+    } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 0) {
+            currentSlide--;
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+
+// 點擊畫面下半部前進
+document.addEventListener('click', (e) => {
+    if (e.clientY > window.innerHeight / 2) {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+</script>
+
+</body>
+</html>
