@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 自主業務員系統 - 技術提案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ecf0f1;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            margin-bottom: 2px;
+            page-break-after: always;
+        }
+
+        .slide-cover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .slide-dark {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .slide-accent {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            color: #2c3e50;
+        }
+
+        .slide-green {
+            background: linear-gradient(135deg, #e8f8f5 0%, #d0ece7 100%);
+            color: #2c3e50;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .slide-dark h2, .slide-cover h2 {
+            color: white;
+            border-bottom-color: white;
+        }
+        
+        .slide-accent h2 {
+            color: #880e4f;
+            border-bottom-color: #ad1457;
+        }
+        
+        .slide-green h2 {
+            color: #2c3e50;
+            border-bottom-color: #16a085;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin: 30px 0 20px 0;
+            color: #34495e;
+        }
+
+        .slide-dark h3 {
+            color: #ecf0f1;
+        }
+        
+        .slide-accent h3 {
+            color: #ad1457;
+        }
+        
+        .slide-green h3 {
+            color: #16a085;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .slide-cover .subtitle, .slide-dark .subtitle {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .slide-accent .subtitle {
+            color: #34495e;
+        }
+        
+        .slide-green .subtitle {
+            color: #34495e;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .slide-dark .card {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .slide-accent .card {
+            background: white;
+            color: #2c3e50;
+        }
+        
+        .slide-green .card {
+            background: white;
+            color: #2c3e50;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .highlight-green {
+            background: linear-gradient(120deg, #27ae60 0%, #229954 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .highlight-blue {
+            background: linear-gradient(120deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .big-number {
+            font-size: 4em;
+            font-weight: 700;
+            color: #667eea;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .slide-dark .big-number {
+            color: white;
+        }
+        
+        .slide-accent .big-number {
+            color: #ad1457;
+        }
+        
+        .slide-green .big-number {
+            color: #16a085;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.2em;
+        }
+
+        ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        table tr:hover {
+            background: #e8f4f8;
+        }
+
+        /* 深色背景的表格樣式 */
+        .slide-dark table td {
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .slide-dark table tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .slide-dark table tr:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* slide-accent 表格使用深色文字 */
+        .slide-accent table td {
+            color: #2c3e50;
+        }
+
+        .price-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.5em;
+            font-weight: 700;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .price-tag-green {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.5em;
+            font-weight: 700;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .mockup {
+            background: #34495e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .mockup-header {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .mockup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            font-size: 0.95em;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin: 5px;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .badge-info {
+            background: #3498db;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .cta-box h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-box .big-number {
+            color: #ffe66d;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #667eea;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 4px solid white;
+        }
+
+        .flow-diagram {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .flow-step {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .flow-arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .requirement-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 6px solid #f39c12;
+        }
+
+        .requirement-box h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 6px solid #00b894;
+        }
+
+        .solution-box h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        @media print {
+            .slide {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 第 1 頁：封面 -->
+<div class="slide slide-cover">
+    <h1>AI 自主業務員系統</h1>
+    <h2 style="border: none; font-size: 2em; margin-bottom: 50px;">從探索到成交的全自動閉環</h2>
+    <div class="subtitle">基於 OpenClaw Autonomous Agent 架構</div>
+    <div style="margin-top: 80px;">
+        <p style="font-size: 1.3em;">提案對象：Jacky Chen</p>
+        <p style="font-size: 1.1em; margin-top: 20px;">日期：2026-02-25</p>
+    </div>
+</div>
+
+<!-- 第 2 頁：客戶需求分析 -->
+<div class="slide">
+    <h2>客戶需求分析</h2>
+    
+    <div class="requirement-box">
+        <h3>🎯 核心訴求</h3>
+        <p style="font-size: 1.2em; line-height: 1.8;">
+            「我不希望限制系統只能在 591 或特定社團運作。<br>
+            我希望這套 AI 就像網路上看到的 Clawbot 範例一樣——<br>
+            當我給出一個『開發潛在售屋客戶』的目標時，<br>
+            <strong>她能自己思考去哪裡找資料、自己判斷哪些是高價值目標，<br>
+            並主動執行後續的觸及動作。</strong>」
+        </p>
+    </div>
+
+    <h3 style="margin-top: 40px;">4 大核心需求</h3>
+    
+    <div class="grid-2">
+        <div class="card">
+            <h3 style="color: #667eea;">1️⃣ 自主探索（Autonomous Exploration）</h3>
+            <ul style="font-size: 1em;">
+                <li>不設限監控範圍</li>
+                <li>AI 自己決定去哪找客戶</li>
+                <li>自主判斷平台價值</li>
+                <li>動態調整搜尋策略</li>
+            </ul>
+            <div style="margin-top: 15px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 0.95em;">
+                <strong>範例：</strong><br>
+                系統自己搜尋「竹山 賣屋」→ 發現 Facebook 社團 → 自動加入監控
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">2️⃣ 智能判斷（AI Reasoning）</h3>
+            <ul style="font-size: 1em;">
+                <li>自己判斷高價值目標</li>
+                <li>區分急售 vs 觀望</li>
+                <li>評估客戶意願強度</li>
+                <li>預測成交機率</li>
+            </ul>
+            <div style="margin-top: 15px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 0.95em;">
+                <strong>範例：</strong><br>
+                看到「急售透天」→ 判斷：高價值（85 分）→ 優先觸及
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">3️⃣ 自動對話（Auto Engagement）</h3>
+            <ul style="font-size: 1em;">
+                <li>主動發送開發訊息</li>
+                <li>自動回覆客戶問題</li>
+                <li>維持多輪對話</li>
+                <li>判斷最佳切入點</li>
+            </ul>
+            <div style="margin-top: 15px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 0.95em;">
+                <strong>範例：</strong><br>
+                發現賣屋貼文 → 自動留言「您好，請問這間房子還在嗎？」
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">4️⃣ 成交閉環（Sales Funnel）</h3>
+            <ul style="font-size: 1em;">
+                <li>從發現到成交全流程</li>
+                <li>自動篩選有意願名單</li>
+                <li>建立 CRM 系統</li>
+                <li>提醒跟進時機</li>
+            </ul>
+            <div style="margin-top: 15px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 0.95em;">
+                <strong>範例：</strong><br>
+                整理高意願客戶 → Telegram 通知「張小姐該跟進了」
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-box" style="margin-top: 40px;">
+        <h3>💡 關鍵差異</h3>
+        <div style="font-size: 1.3em; margin-top: 20px;">
+            ❌ 不是「自動化腳本」（固定流程、寫死邏輯）<br>
+            ✅ 是「AI 業務員」（自己思考、自己執行、自己學習）
+        </div>
+    </div>
+</div>
+
+<!-- 第 3 頁：OpenClaw 解決方案 -->
+<div class="slide slide-green">
+    <h2>OpenClaw 解決方案</h2>
+    
+    <div style="background: rgba(22, 160, 133, 0.15); padding: 30px; border-radius: 12px; margin-bottom: 40px; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; text-align: center; font-size: 2em;">✅ 我們已經有所有需要的工具</h3>
+        <p style="text-align: center; font-size: 1.3em; margin-top: 15px; color: #2c3e50;">
+            OpenClaw 本身就是 Autonomous Agent 框架<br>
+            不需要從頭開發，只需「組合 + 調校」
+        </p>
+    </div>
+
+    <h3>現有資源對應表</h3>
+    
+    <table>
+        <tr>
+            <th>客戶需求</th>
+            <th>OpenClaw 現有工具</th>
+            <th>實現方式</th>
+        </tr>
+        <tr>
+            <td><strong>1️⃣ 自主探索</strong></td>
+            <td>
+                • web_search（搜尋平台）<br>
+                • agent-browser（自動操作網頁）<br>
+                • sessions_spawn（創建探索 sub-agent）
+            </td>
+            <td>
+                Sub-agent 自己搜尋「竹山 賣屋」<br>
+                → 找到 Facebook 社團<br>
+                → 自動加入並監控
+            </td>
+        </tr>
+        <tr>
+            <td><strong>2️⃣ 智能判斷</strong></td>
+            <td>
+                • Claude Opus（高階 LLM）<br>
+                • subagents（管理多個判斷任務）<br>
+                • memory（學習歷史數據）
+            </td>
+            <td>
+                每個貼文問 Claude Opus：<br>
+                「這是急售嗎？價值幾分？」<br>
+                → AI 評分 0-100
+            </td>
+        </tr>
+        <tr>
+            <td><strong>3️⃣ 自動對話</strong></td>
+            <td>
+                • agent-browser（操作 Messenger/LINE）<br>
+                • message（Telegram Bot）<br>
+                • wacli（WhatsApp 發送）
+            </td>
+            <td>
+                agent-browser 打開 Messenger<br>
+                → Claude 生成個性化訊息<br>
+                → 自動發送並回覆
+            </td>
+        </tr>
+        <tr>
+            <td><strong>4️⃣ 成交閉環</strong></td>
+            <td>
+                • gog sheets（CRM 系統）<br>
+                • cron（定期提醒）<br>
+                • message（Telegram 通知）
+            </td>
+            <td>
+                gog sheets 記錄客戶狀態<br>
+                → Cron 檢查「3 天後追蹤」<br>
+                → Telegram 提醒 Jacky
+            </td>
+        </tr>
+    </table>
+
+    <div style="margin-top: 40px; background: rgba(22, 160, 133, 0.15); padding: 30px; border-radius: 12px; text-align: center; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; font-size: 1.8em;">🚀 關鍵優勢</h3>
+        <div class="grid-3" style="margin-top: 20px; text-align: left; color: #2c3e50;">
+            <div>
+                <div style="font-size: 2em; margin-bottom: 10px;">✅</div>
+                <strong style="font-size: 1.2em; color: #2c3e50;">技術成熟</strong><br>
+                <span style="color: #34495e;">OpenClaw 已驗證（HR 招募系統實際案例）</span>
+            </div>
+            <div>
+                <div style="font-size: 2em; margin-bottom: 10px;">⚡</div>
+                <strong style="font-size: 1.2em; color: #2c3e50;">開發快速</strong><br>
+                <span style="color: #34495e;">4-5 週交付 vs 傳統 10-12 週</span>
+            </div>
+            <div>
+                <div style="font-size: 2em; margin-bottom: 10px;">💰</div>
+                <strong style="font-size: 1.2em; color: #2c3e50;">成本合理</strong><br>
+                <span style="color: #34495e;">不用從頭開發框架</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 4 頁：技術架構 -->
+<div class="slide">
+    <h2>技術架構：Sub-agent 編排</h2>
+    
+    <div class="flow-diagram">
+        <div class="flow-step">
+            <h3 style="color: #667eea; margin: 0;">Main Session - Jacky（主控）</h3>
+            <p>給出目標：「去網路上找竹山賣屋客戶」</p>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <div class="flow-step">
+            <h3 style="color: #667eea; margin: 0;">Cron 觸發器</h3>
+            <p>每天 09:00 自動執行 sessions_spawn</p>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <div class="grid-2" style="gap: 20px;">
+            <div class="flow-step">
+                <h3 style="color: #27ae60; margin: 0;">🔍 探索者 Sub-agent</h3>
+                <ul style="font-size: 0.95em; margin: 10px 0;">
+                    <li>web_search 找平台</li>
+                    <li>agent-browser 加入社團</li>
+                    <li>更新監控清單（gog sheets）</li>
+                </ul>
+                <div class="badge badge-success">自主探索</div>
+            </div>
+            
+            <div class="flow-step">
+                <h3 style="color: #3498db; margin: 0;">🎯 監控者 Sub-agent</h3>
+                <ul style="font-size: 0.95em; margin: 10px 0;">
+                    <li>agent-browser 爬貼文</li>
+                    <li>Claude Opus 判斷價值</li>
+                    <li>篩選高價值客戶</li>
+                </ul>
+                <div class="badge badge-info">智能判斷</div>
+            </div>
+            
+            <div class="flow-step">
+                <h3 style="color: #f39c12; margin: 0;">💬 溝通者 Sub-agent</h3>
+                <ul style="font-size: 0.95em; margin: 10px 0;">
+                    <li>agent-browser 發訊息</li>
+                    <li>Claude Opus 生成回覆</li>
+                    <li>判斷客戶意願</li>
+                </ul>
+                <div class="badge badge-warning">自動對話</div>
+            </div>
+            
+            <div class="flow-step">
+                <h3 style="color: #e74c3c; margin: 0;">📊 整理者 Sub-agent</h3>
+                <ul style="font-size: 0.95em; margin: 10px 0;">
+                    <li>gog sheets 更新 CRM</li>
+                    <li>Cron 追蹤提醒</li>
+                    <li>Telegram 通知 Jacky</li>
+                </ul>
+                <div class="badge badge-danger">成交閉環</div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <div class="flow-step" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h3 style="color: white; margin: 0;">🎯 結果交付</h3>
+            <p style="color: white;">Telegram 通知 Jacky：「今天找到 5 位高意願客戶，請跟進」</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; padding: 25px; background: #e8f4f8; border-radius: 12px;">
+        <h3>💡 為什麼是 Sub-agent 架構？</h3>
+        <div class="grid-2">
+            <div>
+                <strong>傳統自動化：</strong><br>
+                • 單一腳本執行固定流程<br>
+                • 無法並行處理<br>
+                • 卡在一個環節就全停
+            </div>
+            <div>
+                <strong>Sub-agent 編排：</strong><br>
+                • 4 個 AI 分工合作<br>
+                • 並行處理、互不影響<br>
+                • 像真人團隊一樣運作
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 5 頁：成品展示 -->
+<div class="slide slide-dark">
+    <h2>成品展示</h2>
+    
+    <div class="grid-2">
+        <!-- 左側：AI 探索報告 -->
+        <div>
+            <h3 style="color: white;">🔍 探索者報告（每日自動）</h3>
+            <div class="mockup">
+                <div class="mockup-header">探索者 Sub-agent 回報</div>
+                <div class="mockup-content">
+                    <strong>【2026-02-25 探索報告】</strong><br><br>
+                    
+                    今天我發現 <span class="highlight-blue">3 個新平台</span>：<br><br>
+                    
+                    1️⃣ <strong>Facebook 社團「竹山買賣」</strong><br>
+                    • 成員：273 人<br>
+                    • 活躍度：高（每日 5-8 篇貼文）<br>
+                    • 評估：值得監控 ✓<br>
+                    • 狀態：已加入<br><br>
+                    
+                    2️⃣ <strong>PTT home-sale 板</strong><br>
+                    • 每日貼文：2-3 篇<br>
+                    • 竹山相關：偶爾出現<br>
+                    • 評估：低優先級<br><br>
+                    
+                    3️⃣ <strong>591 竹山區</strong><br>
+                    • 每日新物件：5-10 個<br>
+                    • 評估：持續監控 ✓<br>
+                    • 狀態：已設定<br><br>
+                    
+                    <span class="badge badge-success">預估每日潛在客戶：15 人</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：AI 對話範例 -->
+        <div>
+            <h3 style="color: white;">💬 溝通者對話（自動互動）</h3>
+            <div class="mockup">
+                <div class="mockup-header">溝通者 Sub-agent 回報</div>
+                <div class="mockup-content">
+                    <strong>【今日對話摘要】</strong><br><br>
+                    
+                    已自動回覆 <span class="highlight-green">8 位客戶</span><br>
+                    篩選出 <span class="highlight">3 位高意願名單</span>：<br><br>
+                    
+                    <div style="background: #d5f4e6; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>1️⃣ 張小姐（急售透天）</strong><br>
+                        • 物件：竹山鎮延平路 3F 透天<br>
+                        • 預算：800 萬<br>
+                        • AI 評分：<span class="badge badge-success">92 分</span><br>
+                        • 狀態：<span class="badge badge-info">已約看屋</span><br>
+                        • 追蹤：明天下午 2 點<br>
+                        • 備註：急需資金，可議價
+                    </div>
+                    
+                    <div style="background: #fef5e7; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>2️⃣ 李先生（考慮賣公寓）</strong><br>
+                        • 物件：竹山鎮集山路 2 房<br>
+                        • 預算：未定<br>
+                        • AI 評分：<span class="badge badge-warning">68 分</span><br>
+                        • 狀態：<span class="badge badge-warning">3 天後再聯繫</span><br>
+                        • 備註：等貸款結清
+                    </div>
+                    
+                    <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>3️⃣ 王太太（土地出售）</strong><br>
+                        • 物件：竹山鎮農地 500 坪<br>
+                        • AI 評分：<span class="badge badge-info">75 分</span><br>
+                        • 狀態：<span class="badge badge-success">待評估</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; background: rgba(255,255,255,0.1); padding: 25px; border-radius: 12px;">
+        <h3 style="color: white; text-align: center;">📊 整理者 CRM 系統</h3>
+        <table style="font-size: 0.9em; margin-top: 20px;">
+            <tr>
+                <th>客戶</th>
+                <th>物件</th>
+                <th>評分</th>
+                <th>狀態</th>
+                <th>下次追蹤</th>
+            </tr>
+            <tr>
+                <td>張小姐</td>
+                <td>延平路透天</td>
+                <td><span class="badge badge-success">92</span></td>
+                <td>已約看屋</td>
+                <td>明天 14:00</td>
+            </tr>
+            <tr>
+                <td>李先生</td>
+                <td>集山路公寓</td>
+                <td><span class="badge badge-warning">68</span></td>
+                <td>3 天後聯繫</td>
+                <td>2/28</td>
+            </tr>
+            <tr>
+                <td>王太太</td>
+                <td>農地 500 坪</td>
+                <td><span class="badge badge-info">75</span></td>
+                <td>待評估</td>
+                <td>本週內</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- 第 6 頁：實現方式詳解 -->
+<div class="slide">
+    <h2>實現方式詳解</h2>
+    
+    <h3>需求 1：自主探索 → 如何用 OpenClaw 實現</h3>
+    <div class="solution-box">
+        <strong style="font-size: 1.2em;">使用工具：</strong> web_search + agent-browser + sessions_spawn
+        
+        <div class="code-block" style="margin-top: 15px;">
+# 探索者 Sub-agent 工作流程
+
+1. Main Session 下指令：
+   sessions_spawn(task="去網路上找竹山賣屋客戶")
+
+2. Sub-agent 自己執行：
+   → web_search("竹山 賣屋 Facebook")
+   → 找到 5 個相關社團
+   → agent-browser 訪問每個社團頁面
+   → 評估：成員數、活躍度、相關性
+   → 決定加入 2 個高價值社團
+   → gog sheets 更新監控清單
+
+3. 回報 Main Session：
+   「今天新增 2 個平台，預估每日 10 個潛在客戶」
+        </div>
+        
+        <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+            <strong>關鍵：</strong>不是寫死「去 Facebook 社團 A」，而是 AI 自己搜尋、自己判斷、自己決定
+        </div>
+    </div>
+
+    <h3 style="margin-top: 30px;">需求 2：智能判斷 → 如何用 OpenClaw 實現</h3>
+    <div class="solution-box">
+        <strong style="font-size: 1.2em;">使用工具：</strong> Claude Opus + subagents + memory
+        
+        <div class="code-block" style="margin-top: 15px;">
+# 監控者 Sub-agent 工作流程
+
+1. agent-browser 爬取社團貼文
+   → 每個貼文提取：標題、內容、聯絡方式、圖片
+
+2. 呼叫 Claude Opus 判斷：
+   Prompt: "這個賣屋貼文，請評估：
+   - 是急售還是觀望？
+   - 屋主自售還是代理？
+   - 成交意願強度？
+   - 綜合評分 0-100"
+
+3. Claude Opus 回答：
+   {
+     "type": "急售",
+     "owner": true,
+     "willingness": 90,
+     "score": 85,
+     "reason": "標題含『急售』、聯絡方式是手機、價格合理"
+   }
+
+4. 篩選：只保留評分 > 70 的客戶
+        </div>
+        
+        <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+            <strong>關鍵：</strong>用 LLM 深度理解語意，而非簡單的關鍵字比對
+        </div>
+    </div>
+</div>
+
+<!-- 第 7 頁：成本分析 -->
+<div class="slide slide-accent">
+    <h2>成本分析（完全透明）</h2>
+    
+    <h3>A. 開發成本（一次性，付給我們）</h3>
+    
+    <table>
+        <tr>
+            <th>項目</th>
+            <th>工時</th>
+            <th>費用</th>
+            <th>說明</th>
+        </tr>
+        <tr>
+            <td>需求訪談 & 設計</td>
+            <td>3 天</td>
+            <td>18,000</td>
+            <td>確認監控區域、目標客戶、對話策略</td>
+        </tr>
+        <tr>
+            <td>探索者 Sub-agent</td>
+            <td>5 天</td>
+            <td>30,000</td>
+            <td>web_search + agent-browser 整合</td>
+        </tr>
+        <tr>
+            <td>監控者 Sub-agent</td>
+            <td>5 天</td>
+            <td>30,000</td>
+            <td>爬取邏輯 + Claude Opus 判斷</td>
+        </tr>
+        <tr>
+            <td>溝通者 Sub-agent</td>
+            <td>7 天</td>
+            <td>42,000</td>
+            <td>自動對話 + 訊息生成（最複雜）</td>
+        </tr>
+        <tr>
+            <td>整理者 Sub-agent</td>
+            <td>3 天</td>
+            <td>18,000</td>
+            <td>gog sheets CRM + Cron 提醒</td>
+        </tr>
+        <tr>
+            <td>整合測試 & 優化</td>
+            <td>5 天</td>
+            <td>30,000</td>
+            <td>端對端測試、調校</td>
+        </tr>
+        <tr>
+            <td>上線培訓</td>
+            <td>2 天</td>
+            <td>12,000</td>
+            <td>操作教學、文件交付</td>
+        </tr>
+        <tr style="background: #d5f4e6; font-weight: 700;">
+            <td><strong>總計（進階版）</strong></td>
+            <td><strong>30 天</strong></td>
+            <td><span class="price-tag">180,000</span></td>
+            <td>4-5 週交付</td>
+        </tr>
+    </table>
+
+    <h3 style="margin-top: 40px;">B. 月運行成本（客戶自付 API）</h3>
+    
+    <div class="grid-2">
+        <div style="background: white; padding: 25px; border-radius: 12px; border: 2px solid #e91e63;">
+            <h3 style="color: #ad1457;">LLM API 費用</h3>
+            <table style="font-size: 0.95em;">
+                <tr>
+                    <th>項目</th>
+                    <th>月費 (NT$)</th>
+                </tr>
+                <tr>
+                    <td>Claude Opus（判斷 + 對話）</td>
+                    <td>2,000-3,000</td>
+                </tr>
+                <tr>
+                    <td>備選：Claude Sonnet</td>
+                    <td>1,500-2,000</td>
+                </tr>
+                <tr>
+                    <td>備選：GPT-4 Turbo</td>
+                    <td>3,000-5,000</td>
+                </tr>
+            </table>
+            
+            <div style="margin-top: 15px; padding: 15px; background: #f8bbd0; border-radius: 8px; color: #2c3e50;">
+                <strong>推薦：Claude Opus</strong><br>
+                平衡成本與能力，適合複雜判斷
+            </div>
+        </div>
+
+        <div style="background: white; padding: 25px; border-radius: 12px; border: 2px solid #e91e63;">
+            <h3 style="color: #ad1457;">其他 API 費用</h3>
+            <table style="font-size: 0.95em;">
+                <tr>
+                    <th>項目</th>
+                    <th>月費 (NT$)</th>
+                </tr>
+                <tr>
+                    <td>Facebook Graph API</td>
+                    <td>0（免費）</td>
+                </tr>
+                <tr>
+                    <td>Google Search API</td>
+                    <td>500</td>
+                </tr>
+                <tr>
+                    <td>Google Sheets API</td>
+                    <td>0（免費）</td>
+                </tr>
+                <tr>
+                    <td>Telegram Bot</td>
+                    <td>0（免費）</td>
+                </tr>
+                <tr>
+                    <td>電費（24H 運行）</td>
+                    <td>100</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; background: white; padding: 30px; border-radius: 12px; text-align: center; border: 3px solid #e91e63;">
+        <h3 style="color: #ad1457; font-size: 2em;">總月運行成本</h3>
+        <div class="big-number" style="color: #ad1457; font-size: 3.5em;">2,600-3,600</div>
+        <p style="font-size: 1.2em; color: #2c3e50;">客戶自付（LLM API + 其他 API）</p>
+        
+        <div style="margin-top: 20px; font-size: 1.1em; color: #34495e;">
+            💡 實際消耗視每日客戶數量而定<br>
+            估算：每月處理 300-500 個潛在客戶
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; background: rgba(39, 174, 96, 0.15); padding: 25px; border-radius: 12px; border: 2px solid #27ae60;">
+        <h3 style="color: #ad1457; text-align: center;">✨ 驗收後免費 14 日技術支援</h3>
+        <div class="grid-2" style="margin-top: 20px; color: #2c3e50;">
+            <div>
+                <strong style="font-size: 1.1em; color: #27ae60;">包含：</strong><br>
+                • 技術性異常排除<br>
+                • 系統設定調整<br>
+                • 操作問題解答
+            </div>
+            <div>
+                <strong style="font-size: 1.1em; color: #e74c3c;">不包含：</strong><br>
+                • 功能新增或調整<br>
+                • 第三方服務變更導致的問題<br>
+                • 客戶自行修改導致的異常
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- 第 8 頁：合約與付款流程 -->
+<div class="slide slide-dark">
+    <h2>合約與付款流程</h2>
+    
+    <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 12px; margin-bottom: 40px;">
+        <h3 style="color: white; text-align: center; margin-bottom: 30px;">📋 付款方式</h3>
+        <div class="grid-2">
+            <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 3em; margin-bottom: 15px;">1️⃣</div>
+                <h3 style="color: white; font-size: 1.5em; margin-bottom: 15px;">簽約訂金</h3>
+                <div class="big-number" style="color: #ffe66d; font-size: 3em;">70%</div>
+                <div style="font-size: 1.1em; margin-top: 15px;">
+                    簽約後 3 個工作日內支付<br>
+                    <span style="font-size: 0.9em; opacity: 0.8;">（專案排程與開發啟動費用）</span>
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 3em; margin-bottom: 15px;">2️⃣</div>
+                <h3 style="color: white; font-size: 1.5em; margin-bottom: 15px;">驗收尾款</h3>
+                <div class="big-number" style="color: #ffe66d; font-size: 3em;">30%</div>
+                <div style="font-size: 1.1em; margin-top: 15px;">
+                    驗收通過後支付<br>
+                    <span style="font-size: 0.9em; opacity: 0.8;">（完成驗收通知後 7 日內）</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; margin-bottom: 40px;">
+        <h3 style="color: white; margin-bottom: 25px;">🔄 完整流程（4 步驟）</h3>
+        <div class="grid-2" style="gap: 20px;">
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">📝 1. 簽署合約</div>
+                <div style="font-size: 1.05em;">
+                    • 雙方簽署開發服務合約<br>
+                    • 附件一：專案規格與驗收標準說明書<br>
+                    • 明確功能範圍與交付項目
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">💰 2. 支付訂金</div>
+                <div style="font-size: 1.05em;">
+                    • 70% 訂金（3 個工作日內）<br>
+                    • 訂金支付後開始執行專案<br>
+                    • ⚠️ 訂金不予退還
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">✅ 3. 驗收系統</div>
+                <div style="font-size: 1.05em;">
+                    • 依附件一逐項檢視功能<br>
+                    • 7 日內完成驗收<br>
+                    • 未提出視為驗收通過
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">🎯 4. 正式交付</div>
+                <div style="font-size: 1.05em;">
+                    • 支付 30% 尾款<br>
+                    • 系統正式上線<br>
+                    • 啟動 14 日免費技術支援
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div style="background: rgba(231, 76, 60, 0.2); padding: 25px; border-radius: 12px; border: 2px solid #e74c3c;">
+            <h3 style="color: white;">⚠️ 重要說明</h3>
+            <ul style="color: white; font-size: 1.05em;">
+                <li>訂金屬「專案排程與開發啟動費用」</li>
+                <li>一經專案開始執行即不予退還</li>
+                <li>尾款未付清前暫停系統交付</li>
+                <li>需求變更需另行評估費用</li>
+            </ul>
+        </div>
+
+        <div style="background: rgba(39, 174, 96, 0.2); padding: 25px; border-radius: 12px; border: 2px solid #27ae60;">
+            <h3 style="color: white;">✨ 免費技術支援（14 日）</h3>
+            <div style="color: white; font-size: 1.05em;">
+                <strong>包含：</strong><br>
+                • 技術性異常排除<br>
+                • 系統設定調整<br>
+                • 操作問題解答<br><br>
+                <strong>不包含：</strong><br>
+                • 功能新增或調整<br>
+                • 第三方服務變更導致的問題<br>
+                • 客戶自行修改導致的異常
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 第 9 頁：方案與定價 -->
+<div class="slide">
+    <h2>方案與定價</h2>
+    
+    <div class="grid-3">
+        <div class="card">
+            <h3 style="color: #667eea;">基礎版</h3>
+            <div class="big-number" style="font-size: 3em;">98K</div>
+            
+            <h4 style="margin-top: 20px;">包含內容：</h4>
+            <ul style="font-size: 0.95em;">
+                <li>單一地區（如竹山鎮）</li>
+                <li>2-3 個主要平台</li>
+                <li>探索者 + 監控者</li>
+                <li>基礎對話能力</li>
+                <li>Google Sheets CRM</li>
+            </ul>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 0.9em;">
+                <strong>適合：</strong>單一區域試水溫
+            </div>
+        </div>
+
+        <div class="card" style="border: 4px solid #667eea; transform: scale(1.05);">
+            <div class="badge badge-success" style="font-size: 1em; padding: 8px 15px;">⭐ 推薦</div>
+            <h3 style="color: #667eea;">進階版</h3>
+            <div class="big-number" style="font-size: 3em;">198K</div>
+            
+            <h4 style="margin-top: 20px;">包含內容：</h4>
+            <ul style="font-size: 0.95em;">
+                <li>多地區（3-5 個）</li>
+                <li>自主平台探索</li>
+                <li>完整 4 個 Sub-agent</li>
+                <li>進階對話 + CRM</li>
+                <li>學習與優化</li>
+                <li>6 個月技術支援</li>
+            </ul>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #d5f4e6; border-radius: 8px; font-size: 0.9em;">
+                <strong>適合：</strong>認真投入，追求效果
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">完整版</h3>
+            <div class="big-number" style="font-size: 3em;">398K</div>
+            
+            <h4 style="margin-top: 20px;">包含內容：</h4>
+            <ul style="font-size: 0.95em;">
+                <li>全台不限地區</li>
+                <li>完整 Agent 能力</li>
+                <li>多語言對話</li>
+                <li>深度學習優化</li>
+                <li>Web 管理後台</li>
+                <li>12 個月完整支援</li>
+                <li>定期優化報告</li>
+            </ul>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #fef5e7; border-radius: 8px; font-size: 0.9em;">
+                <strong>適合：</strong>大規模業務，全台佈局
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px;">
+        <h3 style="color: white; text-align: center;">💡 為什麼價格比傳統方案低？</h3>
+        <div class="grid-3" style="margin-top: 20px;">
+            <div style="text-align: center;">
+                <div style="font-size: 2em;">✅</div>
+                <strong>OpenClaw 框架已存在</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.9;">不用從頭開發</span>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2em;">✅</div>
+                <strong>所有 Skills 現成</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.9;">直接組合使用</span>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2em;">✅</div>
+                <strong>開發時程短</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.9;">4-5 週交付</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 10 頁：開發時程 -->
+<div class="slide slide-dark">
+    <h2>開發時程（進階版）</h2>
+    
+    <div class="timeline">
+        <div class="timeline-item">
+            <h3 style="color: white;">第 1 週：需求訪談 & 設計</h3>
+            <div style="margin-left: 20px; font-size: 1.1em; color: white;">
+                <strong>我們做：</strong><br>
+                • 深入訪談業務需求<br>
+                • 設計 Sub-agent 工作流程<br>
+                • 定義對話策略與話術<br>
+                • 設計 CRM 欄位結構<br><br>
+                
+                <strong>客戶做：</strong><br>
+                • 提供目標區域與平台<br>
+                • 分享成功案例（學習話術）<br>
+                • 確認需求文件
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <h3 style="color: white;">第 2-3 週：Sub-agent 開發</h3>
+            <div style="margin-left: 20px; font-size: 1.1em; color: white;">
+                <strong>我們做：</strong><br>
+                • 開發 4 個 Sub-agent<br>
+                • 整合 OpenClaw Skills<br>
+                • 調校 Claude Opus 判斷邏輯<br>
+                • 設定 Cron 觸發器<br><br>
+                
+                <strong>客戶做：</strong><br>
+                • 準備 24H 電腦<br>
+                • 申請 Claude API Key<br>
+                • 建立 Facebook/LINE 帳號<br>
+                • 建立 Google Sheets
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <h3 style="color: white;">第 4 週：整合測試</h3>
+            <div style="margin-left: 20px; font-size: 1.1em; color: white;">
+                <strong>我們做：</strong><br>
+                • 端對端測試<br>
+                • 優化對話品質<br>
+                • 調整判斷門檻<br>
+                • 修復 Bug<br><br>
+                
+                <strong>客戶做：</strong><br>
+                • 測試系統運作<br>
+                • 提供回饋<br>
+                • 驗收功能
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <h3 style="color: white;">第 5 週：上線培訓</h3>
+            <div style="margin-left: 20px; font-size: 1.1em; color: white;">
+                <strong>我們做：</strong><br>
+                • 到府安裝部署<br>
+                • 操作教學（2 天）<br>
+                • 交付文件<br>
+                • 保固開始<br><br>
+                
+                <strong>客戶做：</strong><br>
+                • 參加培訓<br>
+                • 實際操作練習<br>
+                • 簽署驗收單
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px;">
+        <div class="grid-2">
+            <div>
+                <h3 style="color: white;">標準時程</h3>
+                <div class="big-number" style="color: white; font-size: 3em;">4-5 週</div>
+                <p style="color: white; font-size: 1.1em;">
+                    vs 傳統 Autonomous Agent 開發：10-12 週
+                </p>
+            </div>
+            <div>
+                <h3 style="color: white;">關鍵里程碑</h3>
+                <ul style="color: white; font-size: 1em;">
+                    <li>D+7：需求確認</li>
+                    <li>D+21：開發完成</li>
+                    <li>D+28：測試通過</li>
+                    <li>D+35：正式上線</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 11 頁：POC 方案 -->
+<div class="slide slide-green">
+    <h2>POC 方案（降低風險）</h2>
+    
+    <div style="background: rgba(22, 160, 133, 0.15); padding: 40px; border-radius: 16px; margin-bottom: 40px; text-align: center; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; font-size: 2.5em; margin-bottom: 20px;">2 週免費 POC</h3>
+        <p style="font-size: 1.3em; color: #2c3e50;">
+            Proof of Concept - 證明技術可行性<br>
+            滿意後再簽正式合約
+        </p>
+    </div>
+
+    <h3>POC 內容</h3>
+    
+    <div class="grid-2">
+        <div class="card">
+            <h3 style="color: #667eea;">我們做什麼</h3>
+            <ul>
+                <li>開發「探索者 + 監控者」原型</li>
+                <li>實際跑 1 個地區（如竹山鎮）</li>
+                <li>展示自主探索能力</li>
+                <li>展示 AI 判斷能力</li>
+                <li>提供 2 週測試數據</li>
+            </ul>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 8px;">
+                <strong>目標：</strong>證明 OpenClaw 能做到<br>
+                「自主探索 + AI 判斷」
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">你會看到什麼</h3>
+            <ul>
+                <li>系統自己找到 3-5 個平台</li>
+                <li>每日找到 10-20 個潛在客戶</li>
+                <li>AI 評分 0-100 分</li>
+                <li>篩選出 3-5 個高價值目標</li>
+                <li>Telegram 每日推送報告</li>
+            </ul>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #d5f4e6; border-radius: 8px;">
+                <strong>結果：</strong>實際數據說話<br>
+                不是空口白話
+            </div>
+        </div>
+    </div>
+
+    <h3 style="margin-top: 40px;">POC 流程</h3>
+    
+    <div class="flow-diagram">
+        <div class="flow-step">
+            <strong style="color: #667eea;">第 1 天：</strong> 需求訪談（2 小時）
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+            <strong style="color: #667eea;">第 2-5 天：</strong> 開發原型
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+            <strong style="color: #667eea;">第 6 天：</strong> 系統上線，開始運作
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+            <strong style="color: #667eea;">第 7-14 天：</strong> 收集測試數據
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white;">
+            <strong style="color: white;">第 14 天：</strong> 成果展示 + 決定是否簽約
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; background: rgba(22, 160, 133, 0.15); padding: 30px; border-radius: 12px; text-align: center; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; font-size: 1.8em;">💡 POC 成功標準</h3>
+        <div class="grid-3" style="margin-top: 20px; text-align: left;">
+            <div style="color: #2c3e50;">
+                <strong style="font-size: 1.3em; color: #16a085;">✓ 自主探索</strong><br>
+                系統自己找到 3+ 平台
+            </div>
+            <div style="color: #2c3e50;">
+                <strong style="font-size: 1.3em; color: #16a085;">✓ AI 判斷</strong><br>
+                準確度 > 75%
+            </div>
+            <div style="color: #2c3e50;">
+                <strong style="font-size: 1.3em; color: #16a085;">✓ 每日產出</strong><br>
+                3-5 個高價值客戶
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第 12 頁：服務承諾 -->
+<div class="slide">
+    <h2>服務承諾</h2>
+    
+    <div class="grid-3">
+        <div class="card">
+            <h3 style="color: #667eea;">基礎版</h3>
+            <div class="big-number" style="font-size: 2.5em;">14 天</div>
+            <h4>驗收後技術支援</h4>
+            <ul style="font-size: 0.95em;">
+                <li>系統安裝與設定</li>
+                <li>基礎操作教學</li>
+                <li>技術性問題排除</li>
+                <li>操作文件提供</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border: 3px solid #667eea;">
+            <h3 style="color: #667eea;">進階版 ⭐</h3>
+            <div class="big-number" style="font-size: 2.5em;">6 個月</div>
+            <h4>技術支援</h4>
+            <ul style="font-size: 0.95em;">
+                <li>6 個月免費技術支援</li>
+                <li>Bug 修復（原功能範圍）</li>
+                <li>參數調整與優化</li>
+                <li>遠端協助（工作日 9:00-18:00）</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">完整版</h3>
+            <div class="big-number" style="font-size: 2.5em;">12 個月</div>
+            <h4>完整支援</h4>
+            <ul style="font-size: 0.95em;">
+                <li>12 個月技術支援</li>
+                <li>系統安全更新</li>
+                <li>效能優化建議</li>
+                <li>每季度優化報告</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 style="margin-top: 40px;">共通承諾</h3>
+    
+    <div class="grid-2">
+        <div class="card">
+            <h3 style="color: #667eea;">🛡️ 資料安全</h3>
+            <ul>
+                <li>資料僅存客戶電腦</li>
+                <li>API Key 加密儲存</li>
+                <li>不上傳到我們伺服器</li>
+                <li>符合個資法規範</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">📞 客戶支援</h3>
+            <ul>
+                <li>Email 回覆（工作日 24h 內）</li>
+                <li>緊急問題優先處理</li>
+                <li>遠端協助支援</li>
+                <li>完整操作文件</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">🔄 系統維護</h3>
+            <ul>
+                <li>OpenClaw 框架升級</li>
+                <li>安全性更新</li>
+                <li>相容性維護</li>
+                <li>教學影片提供</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #667eea;">⚠️ 免責說明</h3>
+            <ul style="font-size: 0.9em;">
+                <li>第三方 API 服務不穩定</li>
+                <li>客戶端環境問題</li>
+                <li>網路斷線或硬體故障</li>
+                <li>超出原功能範圍的需求</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 第 13 頁：行動呼籲 -->
+<div class="slide slide-cover">
+    <div class="cta-box" style="max-width: 900px; margin: 0 auto;">
+        <h2 style="color: white; border: none; margin-bottom: 30px;">立即啟動</h2>
+        
+        <div style="background: rgba(255,255,255,0.2); padding: 40px; border-radius: 12px; margin: 30px 0;">
+            <h3 style="color: white; font-size: 2em; margin-bottom: 20px;">推薦方案：進階版</h3>
+            <div class="big-number" style="color: #ffe66d; font-size: 4em;">198,000</div>
+            <p style="font-size: 1.3em; color: white;">
+                一次性開發費用<br>
+                + 月運行成本 2,600-3,600（客戶自付）
+            </p>
+            
+            <div style="margin-top: 30px; text-align: left; font-size: 1.1em;">
+                ✓ 完整 4 個 Sub-agent<br>
+                ✓ 自主探索 + AI 判斷 + 自動對話 + 成交閉環<br>
+                ✓ 6 個月技術支援<br>
+                ✓ 4-5 週交付<br>
+                ✓ 2 週免費 POC
+            </div>
+        </div>
+
+        <h3 style="color: white; margin: 40px 0 20px 0;">下一步</h3>
+        <div class="grid-3" style="text-align: center;">
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <div style="font-size: 3em; margin-bottom: 10px;">1</div>
+                <strong>2 週免費 POC</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.8;">證明可行性</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <div style="font-size: 3em; margin-bottom: 10px;">2</div>
+                <strong>滿意後簽約</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.8;">正式開發 4-5 週</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 8px;">
+                <div style="font-size: 3em; margin-bottom: 10px;">3</div>
+                <strong>系統上線</strong><br>
+                <span style="font-size: 0.9em; opacity: 0.8;">開始找客戶</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer" style="margin-top: 80px; color: rgba(255,255,255,0.8);">
+        <p style="font-size: 1.2em;">📞 聯絡我們</p>
+        <p>隨時準備回答任何問題</p>
+    </div>
+</div>
+
+<script>
+// 簡報導航
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+        }
+    } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 0) {
+            currentSlide--;
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+
+document.addEventListener('click', (e) => {
+    if (e.clientY > window.innerHeight / 2) {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+</script>
+
+</body>
+</html>
