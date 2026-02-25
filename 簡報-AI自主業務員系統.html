@@ -46,8 +46,8 @@
         }
 
         .slide-green {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
+            background: linear-gradient(135deg, #e8f8f5 0%, #d0ece7 100%);
+            color: #2c3e50;
         }
 
         h1 {
@@ -64,9 +64,14 @@
             padding-bottom: 15px;
         }
 
-        .slide-dark h2, .slide-accent h2, .slide-cover h2, .slide-green h2 {
+        .slide-dark h2, .slide-accent h2, .slide-cover h2 {
             color: white;
             border-bottom-color: white;
+        }
+        
+        .slide-green h2 {
+            color: #2c3e50;
+            border-bottom-color: #16a085;
         }
 
         h3 {
@@ -75,8 +80,12 @@
             color: #34495e;
         }
 
-        .slide-dark h3, .slide-accent h3, .slide-green h3 {
+        .slide-dark h3, .slide-accent h3 {
             color: #ecf0f1;
+        }
+        
+        .slide-green h3 {
+            color: #16a085;
         }
 
         .subtitle {
@@ -85,8 +94,12 @@
             margin-bottom: 30px;
         }
 
-        .slide-cover .subtitle, .slide-dark .subtitle, .slide-accent .subtitle, .slide-green .subtitle {
+        .slide-cover .subtitle, .slide-dark .subtitle, .slide-accent .subtitle {
             color: rgba(255,255,255,0.9);
+        }
+        
+        .slide-green .subtitle {
+            color: #34495e;
         }
 
         .grid-2 {
@@ -117,9 +130,14 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .slide-dark .card, .slide-accent .card, .slide-green .card {
+        .slide-dark .card, .slide-accent .card {
             background: rgba(255,255,255,0.1);
             color: white;
+        }
+        
+        .slide-green .card {
+            background: white;
+            color: #2c3e50;
         }
 
         .highlight {
@@ -157,8 +175,12 @@
             margin-bottom: 10px;
         }
 
-        .slide-dark .big-number, .slide-accent .big-number, .slide-green .big-number {
+        .slide-dark .big-number, .slide-accent .big-number {
             color: white;
+        }
+        
+        .slide-green .big-number {
+            color: #16a085;
         }
 
         ul {
@@ -512,15 +534,15 @@
 <div class="slide slide-green">
     <h2>OpenClaw 解決方案</h2>
     
-    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; margin-bottom: 40px;">
-        <h3 style="color: white; text-align: center; font-size: 2em;">✅ 我們已經有所有需要的工具</h3>
-        <p style="text-align: center; font-size: 1.3em; margin-top: 15px; color: white;">
+    <div style="background: rgba(22, 160, 133, 0.15); padding: 30px; border-radius: 12px; margin-bottom: 40px; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; text-align: center; font-size: 2em;">✅ 我們已經有所有需要的工具</h3>
+        <p style="text-align: center; font-size: 1.3em; margin-top: 15px; color: #2c3e50;">
             OpenClaw 本身就是 Autonomous Agent 框架<br>
             不需要從頭開發，只需「組合 + 調校」
         </p>
     </div>
 
-    <h3 style="color: white;">現有資源對應表</h3>
+    <h3>現有資源對應表</h3>
     
     <table>
         <tr>
@@ -582,23 +604,23 @@
         </tr>
     </table>
 
-    <div style="margin-top: 40px; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; text-align: center;">
-        <h3 style="color: white; font-size: 1.8em;">🚀 關鍵優勢</h3>
-        <div class="grid-3" style="margin-top: 20px; text-align: left;">
+    <div style="margin-top: 40px; background: rgba(22, 160, 133, 0.15); padding: 30px; border-radius: 12px; text-align: center; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; font-size: 1.8em;">🚀 關鍵優勢</h3>
+        <div class="grid-3" style="margin-top: 20px; text-align: left; color: #2c3e50;">
             <div>
                 <div style="font-size: 2em; margin-bottom: 10px;">✅</div>
-                <strong style="font-size: 1.2em;">技術成熟</strong><br>
-                <span style="opacity: 0.9;">OpenClaw 已驗證（HR 招募系統實際案例）</span>
+                <strong style="font-size: 1.2em; color: #2c3e50;">技術成熟</strong><br>
+                <span style="color: #34495e;">OpenClaw 已驗證（HR 招募系統實際案例）</span>
             </div>
             <div>
                 <div style="font-size: 2em; margin-bottom: 10px;">⚡</div>
-                <strong style="font-size: 1.2em;">開發快速</strong><br>
-                <span style="opacity: 0.9;">4-5 週交付 vs 傳統 10-12 週</span>
+                <strong style="font-size: 1.2em; color: #2c3e50;">開發快速</strong><br>
+                <span style="color: #34495e;">4-5 週交付 vs 傳統 10-12 週</span>
             </div>
             <div>
                 <div style="font-size: 2em; margin-bottom: 10px;">💰</div>
-                <strong style="font-size: 1.2em;">成本合理</strong><br>
-                <span style="opacity: 0.9;">不用從頭開發框架</span>
+                <strong style="font-size: 1.2em; color: #2c3e50;">成本合理</strong><br>
+                <span style="color: #34495e;">不用從頭開發框架</span>
             </div>
         </div>
     </div>
@@ -1189,15 +1211,15 @@
 <div class="slide slide-green">
     <h2>POC 方案（降低風險）</h2>
     
-    <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 16px; margin-bottom: 40px; text-align: center;">
-        <h3 style="color: white; font-size: 2.5em; margin-bottom: 20px;">2 週免費 POC</h3>
-        <p style="font-size: 1.3em; color: white;">
+    <div style="background: rgba(22, 160, 133, 0.15); padding: 40px; border-radius: 16px; margin-bottom: 40px; text-align: center; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; font-size: 2.5em; margin-bottom: 20px;">2 週免費 POC</h3>
+        <p style="font-size: 1.3em; color: #2c3e50;">
             Proof of Concept - 證明技術可行性<br>
             滿意後再簽正式合約
         </p>
     </div>
 
-    <h3 style="color: white;">POC 內容</h3>
+    <h3>POC 內容</h3>
     
     <div class="grid-2">
         <div class="card">
@@ -1233,7 +1255,7 @@
         </div>
     </div>
 
-    <h3 style="color: white; margin-top: 40px;">POC 流程</h3>
+    <h3 style="margin-top: 40px;">POC 流程</h3>
     
     <div class="flow-diagram">
         <div class="flow-step">
@@ -1257,19 +1279,19 @@
         </div>
     </div>
 
-    <div style="margin-top: 40px; background: rgba(255,255,255,0.2); padding: 30px; border-radius: 12px; text-align: center;">
-        <h3 style="color: white; font-size: 1.8em;">💡 POC 成功標準</h3>
+    <div style="margin-top: 40px; background: rgba(22, 160, 133, 0.15); padding: 30px; border-radius: 12px; text-align: center; border: 2px solid #16a085;">
+        <h3 style="color: #16a085; font-size: 1.8em;">💡 POC 成功標準</h3>
         <div class="grid-3" style="margin-top: 20px; text-align: left;">
-            <div style="color: white;">
-                <strong style="font-size: 1.3em;">✓ 自主探索</strong><br>
+            <div style="color: #2c3e50;">
+                <strong style="font-size: 1.3em; color: #16a085;">✓ 自主探索</strong><br>
                 系統自己找到 3+ 平台
             </div>
-            <div style="color: white;">
-                <strong style="font-size: 1.3em;">✓ AI 判斷</strong><br>
+            <div style="color: #2c3e50;">
+                <strong style="font-size: 1.3em; color: #16a085;">✓ AI 判斷</strong><br>
                 準確度 > 75%
             </div>
-            <div style="color: white;">
-                <strong style="font-size: 1.3em;">✓ 每日產出</strong><br>
+            <div style="color: #2c3e50;">
+                <strong style="font-size: 1.3em; color: #16a085;">✓ 每日產出</strong><br>
                 3-5 個高價值客戶
             </div>
         </div>
