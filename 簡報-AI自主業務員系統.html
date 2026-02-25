@@ -41,8 +41,8 @@
         }
 
         .slide-accent {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            color: #2c3e50;
         }
 
         .slide-green {
@@ -64,9 +64,14 @@
             padding-bottom: 15px;
         }
 
-        .slide-dark h2, .slide-accent h2, .slide-cover h2 {
+        .slide-dark h2, .slide-cover h2 {
             color: white;
             border-bottom-color: white;
+        }
+        
+        .slide-accent h2 {
+            color: #880e4f;
+            border-bottom-color: #ad1457;
         }
         
         .slide-green h2 {
@@ -80,8 +85,12 @@
             color: #34495e;
         }
 
-        .slide-dark h3, .slide-accent h3 {
+        .slide-dark h3 {
             color: #ecf0f1;
+        }
+        
+        .slide-accent h3 {
+            color: #ad1457;
         }
         
         .slide-green h3 {
@@ -94,8 +103,12 @@
             margin-bottom: 30px;
         }
 
-        .slide-cover .subtitle, .slide-dark .subtitle, .slide-accent .subtitle {
+        .slide-cover .subtitle, .slide-dark .subtitle {
             color: rgba(255,255,255,0.9);
+        }
+        
+        .slide-accent .subtitle {
+            color: #34495e;
         }
         
         .slide-green .subtitle {
@@ -130,9 +143,14 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .slide-dark .card, .slide-accent .card {
+        .slide-dark .card {
             background: rgba(255,255,255,0.1);
             color: white;
+        }
+        
+        .slide-accent .card {
+            background: white;
+            color: #2c3e50;
         }
         
         .slide-green .card {
@@ -175,8 +193,12 @@
             margin-bottom: 10px;
         }
 
-        .slide-dark .big-number, .slide-accent .big-number {
+        .slide-dark .big-number {
             color: white;
+        }
+        
+        .slide-accent .big-number {
+            color: #ad1457;
         }
         
         .slide-green .big-number {
@@ -233,20 +255,22 @@
         }
 
         /* 深色背景的表格樣式 */
-        .slide-dark table td,
-        .slide-accent table td {
+        .slide-dark table td {
             color: white;
             border-bottom: 1px solid rgba(255,255,255,0.2);
         }
 
-        .slide-dark table tr:nth-child(even),
-        .slide-accent table tr:nth-child(even) {
+        .slide-dark table tr:nth-child(even) {
             background: rgba(255,255,255,0.05);
         }
 
-        .slide-dark table tr:hover,
-        .slide-accent table tr:hover {
+        .slide-dark table tr:hover {
             background: rgba(255,255,255,0.1);
+        }
+        
+        /* slide-accent 表格使用深色文字 */
+        .slide-accent table td {
+            color: #2c3e50;
         }
 
         .price-tag {
